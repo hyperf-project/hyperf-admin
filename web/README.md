@@ -11,6 +11,9 @@
 [![github forks](https://img.shields.io/github/forks/soybeanjs/soybean-admin)](https://github.com/soybeanjs/soybean-admin)
 [![gitee stars](https://gitee.com/honghuangdc/soybean-admin/badge/star.svg)](https://gitee.com/honghuangdc/soybean-admin)
 
+<a href="https://hellogithub.com/repository/1298f27d5fe54959a16cf9686516ddb3" target="_blank"><img src="https://abroad.hellogithub.com/v1/widgets/recommend.svg?rid=1298f27d5fe54959a16cf9686516ddb3&claim_uid=IiDXWmP4TEntjbV" alt="Featured｜HelloGitHub" style="width: 250px; height: 54px;" width="250" height="54" /></a>
+
+
 > [!NOTE]
 > If you think `SoybeanAdmin` is helpful to you, or you like our project, please give us a ⭐️ on GitHub. Your support is the driving force for us to continue to improve and add new features! Thank you for your support!
 
@@ -78,8 +81,8 @@
 Make sure your environment meets the following requirements:
 
 - **git**: you need git to clone and manage project versions.
-- **NodeJS**: >=18.0.0, recommended 18.19.0 or higher.
-- **pnpm**: >= 8.0.0, recommended 8.14.0 or higher.
+- **NodeJS**: >=18.12.0, recommended 18.19.0 or higher.
+- **pnpm**: >= 8.7.0, recommended 8.14.0 or higher.
 
 **Clone Project**
 
@@ -108,11 +111,15 @@ pnpm build
 
 ## Ecosystem
 
+- [react-soybean-admin](https://github.com/mufeng889/react-soybean-admin): SoybeanAdmin based version of React.
 - [electron-mock-admin](https://github.com/lixin59/electron-mock-api): A Mock Api management system that helps front-end developers quickly implement interface mocks.
 - [T-Shell](https://github.com/TheBlindM/T-Shell): A terminal emulator and SSH client with configurable command prompts.
 - [pea](https://github.com/haitang1894/pea) : Adopting SpringBoot3.2 + JDK21, MyBatis-Plus, SpringSecurity security framework, etc., suitable for the simple permission system developed by [soybean-admin](https://gitee.com/honghuangdc/soybean-admin).
 - [MalusAdmin](https://github.com/pridejoy/MalusAdmin): A backend management framework developed based on Vue3/TypeScript/NaiveUI and NET7 & Sqlsugar. It is implemented in the most original and simplest way, with a fresh and elegant front-end, a clear and elegant backend structure, and powerful functions.
 - [PanisAdmin](https://github.com/paynezhuang/panis-admin): Adopting SpringBoot 3, SaToken, MySQL and other frameworks to develop and modify [soybean-admin](https://github.com/soybeanjs/soybean-admin) for the second time, adapting dynamic menu/button-level authorization. Retaining the original flavor, fresh and elegant, high-value back-end management system scaffold.
+- [snail-job](https://github.com/aizuda/snail-job): A distributed task retry and task scheduling platform with "high performance, high value and high activity".
+- [SuperApi](https://github.com/TmmTop/SuperApi): Quickly turn your idea into an online stable product! Entity-less library and table building, add, delete, change and check entity-less library table, support 15 kinds of condition query, as well as paging, list, unlimited tree list and other functions of the API deployment! With interface documentation, Auth authorisation, interface flow restriction, access to the client's real IP, advanced server caching components, dynamic APIs and other features, we look forward to your experience!
+- [FastSoyAdmin](https://github.com/sleep1223/fast-soy-admin): A modern Management Platform based on FastAPI+Vue3+Naive UI.
 
 
 ## How to Contribute
@@ -149,20 +156,16 @@ Thanks the following people for their contributions. If you want to contribute t
 
   <div>
   	<p>QQ Group</p>
-    <img src="https://soybeanjs-1300612522.cos.ap-guangzhou.myqcloud.com/uPic/qq-soybean-admin-2.jpg" style="width:200px" />
+    <img src="https://soybeanjs-1300612522.cos.ap-guangzhou.myqcloud.com/uPic/qq-soybean-admin-3.jpg" style="width:200px" />
   </div>
 	<!-- <div>
 		<p>WeChat Group</p>
-		<img src="https://soybeanjs-1300612522.cos.ap-guangzhou.myqcloud.com/uPic/wechat-0402.jpg" style="width:200px" />
+		<img src="https://soybeanjs-1300612522.cos.ap-guangzhou.myqcloud.com/picgo/soybean-admin-wechat-0620.jpg" style="width:200px" />
 	</div> -->
 	<div>
 		<p>Add the following WeChat to invite to the WeChat group</p>
 		<img src="https://soybeanjs-1300612522.cos.ap-guangzhou.myqcloud.com/uPic/wechat-soybeanjs.jpg" style="width:200px" />
 	</div>
-  <div>
-    <p>Add Soybean's WeChat for business consultation, cooperation, project architecture, one-on-one guidance, etc.</p>
-    <img src="https://soybeanjs-1300612522.cos.ap-guangzhou.myqcloud.com/uPic/wechat-soybean.jpg" style="width:200px" />
-  </div>
 
 ## Star Trend
 

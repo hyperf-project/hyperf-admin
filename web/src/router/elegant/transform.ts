@@ -42,7 +42,13 @@ function transformElegantRouteToVueRoute(
   }
 
   function getLayoutName(component: string) {
-    return component.replace(LAYOUT_PREFIX, '');
+    const layout = component.replace(LAYOUT_PREFIX, '');
+
+    if(!layouts[layout]) {
+      throw new Error(`Layout component "${layout}" not found`);
+    }
+
+    return layout;
   }
 
   function isView(component: string) {
@@ -50,7 +56,13 @@ function transformElegantRouteToVueRoute(
   }
 
   function getViewName(component: string) {
-    return component.replace(VIEW_PREFIX, '');
+    const view = component.replace(VIEW_PREFIX, '');
+
+    if(!views[view]) {
+      throw new Error(`View component "${view}" not found`);
+    }
+
+    return view;
   }
 
   function isFirstLevelRoute(item: ElegantConstRoute) {
@@ -81,47 +93,55 @@ function transformElegantRouteToVueRoute(
 
   const vueRoute = { name, path, ...rest } as RouteRecordRaw;
 
-  if (component) {
-    if (isSingleLevelRoute(route)) {
-      const { layout, view } = getSingleLevelRouteComponent(component);
+  try {
+    if (component) {
+      if (isSingleLevelRoute(route)) {
+        const { layout, view } = getSingleLevelRouteComponent(component);
 
-      const singleLevelRoute: RouteRecordRaw = {
-        path,
-        component: layouts[layout],
-        children: [
-          {
-            name,
-            path: '',
-            component: views[view],
-            ...rest
-          } as RouteRecordRaw
-        ]
-      };
+        const singleLevelRoute: RouteRecordRaw = {
+          path,
+          component: layouts[layout],
+          meta: {
+            title: route.meta?.title || ''
+          },
+          children: [
+            {
+              name,
+              path: '',
+              component: views[view],
+              ...rest
+            } as RouteRecordRaw
+          ]
+        };
 
-      return [singleLevelRoute];
+        return [singleLevelRoute];
+      }
+
+      if (isLayout(component)) {
+        const layoutName = getLayoutName(component);
+
+        vueRoute.component = layouts[layoutName];
+      }
+
+      if (isView(component)) {
+        const viewName = getViewName(component);
+
+        vueRoute.component = views[viewName];
+      }
+
     }
-
-    if (isLayout(component)) {
-      const layoutName = getLayoutName(component);
-
-      vueRoute.component = layouts[layoutName];
-    }
-
-    if (isView(component)) {
-      const viewName = getViewName(component);
-
-      vueRoute.component = views[viewName];
-    }
-
+  } catch (error: any) {
+    console.error(`Error transforming route "${route.name}": ${error.toString()}`);
+    return [];
   }
-  
+
   // add redirect to child
   if (children?.length && !vueRoute.redirect) {
     vueRoute.redirect = {
       name: children[0].name
     };
   }
-  
+
   if (children?.length) {
     const childRoutes = children.flatMap(child => transformElegantRouteToVueRoute(child, layouts, views));
 
@@ -143,47 +163,12 @@ function transformElegantRouteToVueRoute(
 const routeMap: RouteMap = {
   "root": "/",
   "not-found": "/:pathMatch(.*)*",
-  "exception": "/exception",
-  "exception_403": "/exception/403",
-  "exception_404": "/exception/404",
-  "exception_500": "/exception/500",
-  "document": "/document",
-  "document_project": "/document/project",
-  "document_project-link": "/document/project-link",
-  "document_vue": "/document/vue",
-  "document_vite": "/document/vite",
-  "document_unocss": "/document/unocss",
-  "document_naive": "/document/naive",
-  "document_antd": "/document/antd",
   "403": "/403",
   "404": "/404",
   "500": "/500",
-  "about": "/about",
-  "function": "/function",
-  "function_hide-child": "/function/hide-child",
-  "function_hide-child_one": "/function/hide-child/one",
-  "function_hide-child_three": "/function/hide-child/three",
-  "function_hide-child_two": "/function/hide-child/two",
-  "function_multi-tab": "/function/multi-tab",
-  "function_request": "/function/request",
-  "function_super-page": "/function/super-page",
-  "function_tab": "/function/tab",
-  "function_toggle-auth": "/function/toggle-auth",
   "home": "/home",
   "iframe-page": "/iframe-page/:url",
-  "login": "/login/:module(pwd-login|code-login|register|reset-pwd|bind-wechat)?",
-  "manage": "/manage",
-  "manage_menu": "/manage/menu",
-  "manage_role": "/manage/role",
-  "manage_user": "/manage/user",
-  "manage_user-detail": "/manage/user-detail/:id",
-  "multi-menu": "/multi-menu",
-  "multi-menu_first": "/multi-menu/first",
-  "multi-menu_first_child": "/multi-menu/first/child",
-  "multi-menu_second": "/multi-menu/second",
-  "multi-menu_second_child": "/multi-menu/second/child",
-  "multi-menu_second_child_home": "/multi-menu/second/child/home",
-  "user-center": "/user-center"
+  "login": "/login/:module(pwd-login|code-login|register|reset-pwd|bind-wechat)?"
 };
 
 /**

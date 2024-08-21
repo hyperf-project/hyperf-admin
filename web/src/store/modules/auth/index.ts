@@ -8,17 +8,24 @@ import { fetchGetUserInfo, fetchLogin } from '@/service/api';
 import { localStg } from '@/utils/storage';
 import { $t } from '@/locales';
 import { useRouteStore } from '../route';
-import { clearAuthStorage, getToken, getUserInfo } from './shared';
+import { useTabStore } from '../tab';
+import { clearAuthStorage, getToken } from './shared';
 
 export const useAuthStore = defineStore(SetupStoreId.Auth, () => {
   const route = useRoute();
   const routeStore = useRouteStore();
+  const tabStore = useTabStore();
   const { toLogin, redirectFromLogin } = useRouterPush(false);
   const { loading: loginLoading, startLoading, endLoading } = useLoading();
 
   const token = ref(getToken());
 
-  const userInfo: Api.Auth.UserInfo = reactive(getUserInfo());
+  const userInfo: Api.Auth.UserInfo = reactive({
+    userId: '',
+    userName: '',
+    roles: [],
+    buttons: []
+  });
 
   /** is super role in static route */
   const isStaticSuper = computed(() => {
@@ -42,6 +49,7 @@ export const useAuthStore = defineStore(SetupStoreId.Auth, () => {
       await toLogin();
     }
 
+    tabStore.cacheTabs();
     routeStore.resetStore();
   }
 
@@ -87,20 +95,41 @@ export const useAuthStore = defineStore(SetupStoreId.Auth, () => {
     localStg.set('token', loginToken.token);
     localStg.set('refreshToken', loginToken.refreshToken);
 
+    // 2. get user info
+    const pass = await getUserInfo();
+
+    if (pass) {
+      token.value = loginToken.token;
+
+      return true;
+    }
+
+    return false;
+  }
+
+  async function getUserInfo() {
     const { data: info, error } = await fetchGetUserInfo();
 
     if (!error) {
-      // 2. store user info
-      localStg.set('userInfo', info);
-
-      // 3. update store
-      token.value = loginToken.token;
+      // update store
       Object.assign(userInfo, info);
 
       return true;
     }
 
     return false;
+  }
+
+  async function initUserInfo() {
+    const hasToken = getToken();
+
+    if (hasToken) {
+      const pass = await getUserInfo();
+
+      if (!pass) {
+        resetStore();
+      }
+    }
   }
 
   return {
@@ -110,6 +139,7 @@ export const useAuthStore = defineStore(SetupStoreId.Auth, () => {
     isLogin,
     loginLoading,
     resetStore,
-    login
+    login,
+    initUserInfo
   };
 });

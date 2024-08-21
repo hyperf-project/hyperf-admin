@@ -34,9 +34,9 @@ function search() {
 }
 
 function handleClose() {
-  visible.value = false;
   // handle with setTimeout to prevent user from seeing some operations
   setTimeout(() => {
+    visible.value = false;
     resultOptions.value = [];
     keyword.value = '';
   }, 200);
@@ -73,10 +73,8 @@ function getActivePathIndex() {
 }
 
 /** key enter */
-function handleEnter(e: Event | undefined) {
+function handleEnter() {
   if (resultOptions.value?.length === 0 || activePath.value === '') return;
-
-  e?.preventDefault();
   handleClose();
   router.push(activePath.value);
 }

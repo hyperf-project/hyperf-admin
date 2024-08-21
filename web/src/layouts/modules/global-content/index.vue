@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { LAYOUT_SCROLL_EL_ID } from '@sa/materials';
 import { useAppStore } from '@/store/modules/app';
 import { useThemeStore } from '@/store/modules/theme';
 import { useRouteStore } from '@/store/modules/route';
+import { useTabStore } from '@/store/modules/tab';
 
 defineOptions({
   name: 'GlobalContent'
@@ -20,8 +22,15 @@ withDefaults(defineProps<Props>(), {
 const appStore = useAppStore();
 const themeStore = useThemeStore();
 const routeStore = useRouteStore();
+const tabStore = useTabStore();
 
 const transitionName = computed(() => (themeStore.page.animate ? themeStore.page.animateMode : ''));
+
+function resetScroll() {
+  const el = document.querySelector(`#${LAYOUT_SCROLL_EL_ID}`);
+
+  el?.scrollTo({ left: 0, top: 0 });
+}
 </script>
 
 <template>
@@ -30,13 +39,14 @@ const transitionName = computed(() => (themeStore.page.animate ? themeStore.page
       :name="transitionName"
       mode="out-in"
       @before-leave="appStore.setContentXScrollable(true)"
+      @after-leave="resetScroll"
       @after-enter="appStore.setContentXScrollable(false)"
     >
       <KeepAlive :include="routeStore.cacheRoutes">
         <component
           :is="Component"
           v-if="appStore.reloadFlag"
-          :key="route.path"
+          :key="tabStore.getTabIdByRoute(route)"
           :class="{ 'p-16px': showPadding }"
           class="flex-grow bg-layout transition-300"
         />
